@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .feedback-container {
+            width: 100%;
+            max-width: 600px;
+            background: #252525;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .feedback-title {
+            font-size: 24px;
+            color: #4a9eff;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .feedback-subtitle {
+            font-size: 14px;
+            color: #888;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-label .required {
+            color: #ff6b6b;
+            margin-left: 4px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            display: block;
+            padding: 40px 20px;
+            background: #1e1e1e;
+            border: 2px dashed #444;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #4a9eff;
+            background: #252530;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .file-upload-text {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .file-upload-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #1e1e1e;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .file-preview img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .file-preview-info {
+            flex: 1;
+        }
+
+        .file-preview-name {
+            font-size: 13px;
+            color: #fff;
+        }
+
+        .file-preview-size {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .file-preview-remove {
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #4a9eff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #3a8eef;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn.loading {
+            background: #666;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            font-size: 24px;
+            color: #4a9eff;
+            margin-bottom: 10px;
+        }
+
+        .success-text {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .error-message {
+            display: none;
+            padding: 12px 16px;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #ff6b6b;
+            border-radius: 8px;
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* 嵌入模式样式 */
+        .feedback-embed .feedback-container {
+            max-width: 100%;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="feedback-container">
+        <!-- 表单 -->
+        <div id="feedbackForm">
+            <h1 class="feedback-title">Customer Feedback</h1>
+            <p class="feedback-subtitle">We will contact you via email as soon as possible</p>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <form id="form">
+                <!-- 国家 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        Country <span class="required">*</span>
+                    </label>
+                    <select class="form-select" name="country" required>
+                        <option value="">Select your country</option>
+                        <option value="USA">United States</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="Germany">Germany</option>
+                        <option value="France">France</option>
+                        <option value="Japan">Japan</option>
+                        <option value="China">China</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- 车型 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        Car Model <span class="required">*</span>
+                    </label>
+                    <select class="form-select" name="carModel" required>
+                        <option value="">Select your car model</option>
+                        <option value="G59">G59</option>
+                        <option value="H97Z">H97Z</option>
+                        <option value="H97Y">H97Y</option>
+                        <option value="H97X">H97X</option>
+                        <option value="S31">S31</option>
+                        <option value="S31O">S31O</option>
+                        <option value="S32O">S32O</option>
+                        <option value="T5EVO">T5EVO</option>
+                        <option value="M57">M57</option>
+                        <option value="C65">C65</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- 问题描述 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        Problem Description <span class="required">*</span>
+                    </label>
+                    <textarea class="form-textarea" name="description" placeholder="Please describe your problem in detail..." required></textarea>
+                </div>
+
+                <!-- 邮箱 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        Your Email <span class="required">*</span>
+                    </label>
+                    <input type="email" class="form-input" name="email" placeholder="example@email.com" required>
+                </div>
+
+                <!-- 图片上传 -->
+                <div class="form-group">
+                    <label class="form-label">Upload Image (Max 5MB)</label>
+                    <label class="file-upload" id="imageUpload">
+                        <input type="file" name="image" accept="image/*" id="imageInput">
+                        <div class="file-upload-icon">📷</div>
+                        <div class="file-upload-text">Click to upload image</div>
+                        <div class="file-upload-hint">JPG, PNG, GIF up to 5MB</div>
+                    </label>
+                    <div id="imagePreview"></div>
+                </div>
+
+                <!-- 视频链接 -->
+                <div class="form-group">
+                    <label class="form-label">Video Link (Google Drive, etc.)</label>
+                    <input type="url" class="form-input" name="videoLink" placeholder="https://drive.google.com/...">
+                    <p style="font-size: 12px; color: #666; margin-top: 6px;">
+                        For videos larger than 5MB, please upload to Google Drive and share the link
+                    </p>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Feedback</button>
+            </form>
+        </div>
+
+        <!-- 成功提示 -->
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">Submitted Successfully!</h2>
+            <p class="success-text">
+                We have received your feedback.<br>
+                Our team will contact you at your email shortly.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Google Apps Script Web App URL (部署后填入)
+        var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6TgSArPXF_h6FhBiRX_GWDmUpOoLf8_-waDtbdHnz1H8R5jFzhiPs23Yi0xNJ9hJn/exec';
+
+        var form = document.getElementById('form');
+        var submitBtn = document.getElementById('submitBtn');
+        var errorMessage = document.getElementById('errorMessage');
+        var successMessage = document.getElementById('successMessage');
+        var feedbackForm = document.getElementById('feedbackForm');
+        var imageInput = document.getElementById('imageInput');
+        var imagePreview = document.getElementById('imagePreview');
+
+        var imageBase64 = '';
+
+        // 图片上传预览
+        imageInput.addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+
+            // 检查文件大小 (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showError('Image size must be less than 5MB');
+                imageInput.value = '';
+                return;
+            }
+
+            // 检查文件类型
+            if (!file.type.startsWith('image/')) {
+                showError('Please upload an image file');
+                imageInput.value = '';
+                return;
+            }
+
+            // 转换为 Base64
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                imageBase64 = event.target.result;
+                showImagePreview(file.name, file.size, imageBase64);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // 显示图片预览
+        function showImagePreview(name, size, base64) {
+            var sizeStr = size < 1024 * 1024
+                ? (size / 1024).toFixed(1) + ' KB'
+                : (size / (1024 * 1024)).toFixed(1) + ' MB';
+
+            imagePreview.innerHTML = '<div class="file-preview">' +
+                '<img src="' + base64 + '" alt="Preview">' +
+                '<div class="file-preview-info">' +
+                    '<div class="file-preview-name">' + name + '</div>' +
+                    '<div class="file-preview-size">' + sizeStr + '</div>' +
+                '</div>' +
+                '<button type="button" class="file-preview-remove" onclick="removeImage()">Remove</button>' +
+            '</div>';
+        }
+
+        // 移除图片
+        window.removeImage = function() {
+            imageBase64 = '';
+            imageInput.value = '';
+            imagePreview.innerHTML = '';
+        };
+
+        // 显示错误
+        function showError(msg) {
+            errorMessage.textContent = msg;
+            errorMessage.classList.add('show');
+            setTimeout(function() {
+                errorMessage.classList.remove('show');
+            }, 5000);
+        }
+
+        // 表单提交
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Submitting...';
+
+            var formData = {
+                country: form.elements['country'].value,
+                carModel: form.elements['carModel'].value,
+                description: form.elements['description'].value,
+                email: form.elements['email'].value,
+                videoLink: form.elements['videoLink'].value,
+                imageBase64: imageBase64
+            };
+
+            try {
+                // 使用 no-cors 模式，避免 CORS 预检
+                // 注意：no-cors 模式下无法读取响应内容，但请求会成功送达 GAS
+                var response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // no-cors 模式下 response.type 是 "opaque"，无法读取具体内容
+                // 但没有抛出异常说明请求已成功发出
+                feedbackForm.style.display = 'none';
+                successMessage.classList.add('show');
+
+            } catch (err) {
+                console.error('Fetch error:', err);
+                showError('Submission failed: ' + err.message);
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = 'Submit Feedback';
+            }
+        });
+    </script>
+</body>
+</html>
