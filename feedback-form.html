@@ -264,18 +264,7 @@
                     <label class="form-label">
                         Country <span class="required">*</span>
                     </label>
-                    <select class="form-select" name="country" required>
-                        <option value="">Select your country</option>
-                        <option value="USA">United States</option>
-                        <option value="UK">United Kingdom</option>
-                        <option value="Germany">Germany</option>
-                        <option value="France">France</option>
-                        <option value="Japan">Japan</option>
-                        <option value="China">China</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <input type="text" class="form-input" name="country" placeholder="Enter your country" required>
                 </div>
 
                 <!-- 车型 -->
@@ -283,20 +272,7 @@
                     <label class="form-label">
                         Car Model <span class="required">*</span>
                     </label>
-                    <select class="form-select" name="carModel" required>
-                        <option value="">Select your car model</option>
-                        <option value="G59">G59</option>
-                        <option value="H97Z">H97Z</option>
-                        <option value="H97Y">H97Y</option>
-                        <option value="H97X">H97X</option>
-                        <option value="S31">S31</option>
-                        <option value="S31O">S31O</option>
-                        <option value="S32O">S32O</option>
-                        <option value="T5EVO">T5EVO</option>
-                        <option value="M57">M57</option>
-                        <option value="C65">C65</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <input type="text" class="form-input" name="carModel" placeholder="Enter your car model" required>
                 </div>
 
                 <!-- 问题描述 -->
@@ -457,7 +433,10 @@
                     feedbackForm.style.display = 'none';
                     successMessage.classList.add('show');
                 } else {
-                    throw new Error(result.error || 'Submission failed');
+                    showError('Submission failed: ' + (result.error || 'Unknown error'));
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    submitBtn.textContent = 'Submit Feedback';
                 }
 
             } catch (err) {
