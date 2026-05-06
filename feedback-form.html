@@ -352,8 +352,8 @@
     </div>
 
     <script>
-        // Google Apps Script Web App URL (部署后填入)
-        var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6TgSArPXF_h6FhBiRX_GWDmUpOoLf8_-waDtbdHnz1H8R5jFzhiPs23Yi0xNJ9hJn/exec';
+        // Cloudflare Worker URL
+        var WORKER_URL = 'https://carconnect-feedback-worker.carconnect-feedback.workers.dev';
 
         var form = document.getElementById('form');
         var submitBtn = document.getElementById('submitBtn');
@@ -443,21 +443,22 @@
             };
 
             try {
-                // 使用 no-cors 模式，避免 CORS 预检
-                // 注意：no-cors 模式下无法读取响应内容，但请求会成功送达 GAS
-                var response = await fetch(APPS_SCRIPT_URL, {
+                var response = await fetch(WORKER_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData)
                 });
 
-                // no-cors 模式下 response.type 是 "opaque"，无法读取具体内容
-                // 但没有抛出异常说明请求已成功发出
-                feedbackForm.style.display = 'none';
-                successMessage.classList.add('show');
+                var result = await response.json();
+
+                if (result.success) {
+                    feedbackForm.style.display = 'none';
+                    successMessage.classList.add('show');
+                } else {
+                    throw new Error(result.error || 'Submission failed');
+                }
 
             } catch (err) {
                 console.error('Fetch error:', err);
