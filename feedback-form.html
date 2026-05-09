@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: #1a1a1a;
@@ -21,7 +20,6 @@
             align-items: center;
             padding: 20px;
         }
-
         .feedback-container {
             width: 100%;
             max-width: 600px;
@@ -30,25 +28,21 @@
             padding: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
-
         .feedback-title {
             font-size: 24px;
             color: #4a9eff;
             margin-bottom: 8px;
             text-align: center;
         }
-
         .feedback-subtitle {
             font-size: 14px;
             color: #888;
             text-align: center;
             margin-bottom: 30px;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-label {
             display: block;
             font-size: 14px;
@@ -56,12 +50,10 @@
             margin-bottom: 8px;
             font-weight: 500;
         }
-
         .form-label .required {
             color: #ff6b6b;
             margin-left: 4px;
         }
-
         .form-input,
         .form-select,
         .form-textarea {
@@ -74,19 +66,16 @@
             font-size: 14px;
             transition: border-color 0.3s;
         }
-
         .form-input:focus,
         .form-select:focus,
         .form-textarea:focus {
             outline: none;
             border-color: #4a9eff;
         }
-
         .form-textarea {
             min-height: 120px;
             resize: vertical;
         }
-
         .file-upload {
             position: relative;
             display: block;
@@ -98,38 +87,32 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
         .file-upload:hover {
             border-color: #4a9eff;
             background: #252530;
         }
-
         .file-upload input[type="file"] {
             position: absolute;
-            top: 0;
-            left: 0;
+            top:0;
+            left:0;
             width: 100%;
             height: 100%;
             opacity: 0;
             cursor: pointer;
         }
-
         .file-upload-icon {
             font-size: 32px;
             margin-bottom: 10px;
         }
-
         .file-upload-text {
             font-size: 14px;
             color: #888;
         }
-
         .file-upload-hint {
             font-size: 12px;
             color: #666;
             margin-top: 8px;
         }
-
         .file-preview {
             display: flex;
             align-items: center;
@@ -139,28 +122,23 @@
             border-radius: 6px;
             margin-top: 10px;
         }
-
         .file-preview img {
             width: 50px;
             height: 50px;
             object-fit: cover;
             border-radius: 4px;
         }
-
         .file-preview-info {
-            flex: 1;
+            flex:1;
         }
-
         .file-preview-name {
             font-size: 13px;
             color: #fff;
         }
-
         .file-preview-size {
             font-size: 11px;
             color: #888;
         }
-
         .file-preview-remove {
             background: #ff6b6b;
             color: #fff;
@@ -170,7 +148,6 @@
             cursor: pointer;
             font-size: 12px;
         }
-
         .submit-btn {
             width: 100%;
             padding: 14px;
@@ -184,49 +161,40 @@
             transition: all 0.3s;
             margin-top: 10px;
         }
-
         .submit-btn:hover {
             background: #3a8eef;
             transform: translateY(-2px);
         }
-
         .submit-btn:disabled {
             background: #666;
             cursor: not-allowed;
             transform: none;
         }
-
         .submit-btn.loading {
             background: #666;
         }
-
         .success-message {
             display: none;
             text-align: center;
             padding: 40px 20px;
         }
-
         .success-message.show {
             display: block;
         }
-
         .success-icon {
             font-size: 64px;
             margin-bottom: 20px;
         }
-
         .success-title {
             font-size: 24px;
             color: #4a9eff;
             margin-bottom: 10px;
         }
-
         .success-text {
             font-size: 14px;
             color: #888;
-            line-height: 1.6;
+            line-height:1.6;
         }
-
         .error-message {
             display: none;
             padding: 12px 16px;
@@ -237,12 +205,9 @@
             font-size: 14px;
             margin-bottom: 20px;
         }
-
         .error-message.show {
             display: block;
         }
-
-        /* 嵌入模式样式 */
         .feedback-embed .feedback-container {
             max-width: 100%;
             box-shadow: none;
@@ -259,7 +224,7 @@
             <div class="error-message" id="errorMessage"></div>
 
             <form id="form">
-                <!-- 国家 -->
+                <!-- 国家（文本输入） -->
                 <div class="form-group">
                     <label class="form-label">
                         Country <span class="required">*</span>
@@ -267,7 +232,7 @@
                     <input type="text" class="form-input" name="country" placeholder="Enter your country" required>
                 </div>
 
-                <!-- 车型 -->
+                <!-- 车型（文本输入） -->
                 <div class="form-group">
                     <label class="form-label">
                         Car Model <span class="required">*</span>
@@ -328,8 +293,8 @@
     </div>
 
     <script>
-        // Cloudflare Worker URL
-        var WORKER_URL = 'https://carconnect-feedback-worker.carconnect-feedback.workers.dev';
+        // 腾讯云函数 URL
+        var WORKER_URL = 'https://1410776270-jd7ixwhwuy.ap-shanghai.tencentscf.com';
 
         var form = document.getElementById('form');
         var submitBtn = document.getElementById('submitBtn');
@@ -346,21 +311,18 @@
             var file = e.target.files[0];
             if (!file) return;
 
-            // 检查文件大小 (5MB)
             if (file.size > 5 * 1024 * 1024) {
                 showError('Image size must be less than 5MB');
                 imageInput.value = '';
                 return;
             }
 
-            // 检查文件类型
             if (!file.type.startsWith('image/')) {
                 showError('Please upload an image file');
                 imageInput.value = '';
                 return;
             }
 
-            // 转换为 Base64
             var reader = new FileReader();
             reader.onload = function(event) {
                 imageBase64 = event.target.result;
@@ -369,7 +331,6 @@
             reader.readAsDataURL(file);
         });
 
-        // 显示图片预览
         function showImagePreview(name, size, base64) {
             var sizeStr = size < 1024 * 1024
                 ? (size / 1024).toFixed(1) + ' KB'
@@ -385,14 +346,12 @@
             '</div>';
         }
 
-        // 移除图片
         window.removeImage = function() {
             imageBase64 = '';
             imageInput.value = '';
             imagePreview.innerHTML = '';
         };
 
-        // 显示错误
         function showError(msg) {
             errorMessage.textContent = msg;
             errorMessage.classList.add('show');
@@ -404,6 +363,8 @@
         // 表单提交
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            console.log('[Feedback] 开始提交表单...');
 
             submitBtn.disabled = true;
             submitBtn.classList.add('loading');
@@ -418,7 +379,15 @@
                 imageBase64: imageBase64
             };
 
+            console.log('[Feedback] 提交数据:', {
+                country: formData.country,
+                carModel: formData.carModel,
+                hasImage: !!imageBase64,
+                imageSize: imageBase64 ? imageBase64.length : 0
+            });
+
             try {
+                console.log('[Feedback] 发送请求到:', WORKER_URL);
                 var response = await fetch(WORKER_URL, {
                     method: 'POST',
                     headers: {
@@ -427,20 +396,36 @@
                     body: JSON.stringify(formData)
                 });
 
-                var result = await response.json();
+                console.log('[Feedback] 响应状态:', response.status, response.statusText);
 
+                // 先检查 HTTP 状态码
+                if (!response.ok) {
+                    var errText = await response.text();
+                    console.error('[Feedback] 服务器错误响应:', errText);
+                    throw new Error('Server error: ' + response.status + ' ' + errText);
+                }
+
+                var result = await response.json();
+                console.log('[Feedback] 响应数据:', result);
+
+                // 根据返回的 success 字段判断
                 if (result.success) {
+                    console.log('[Feedback] 显示成功提示');
                     feedbackForm.style.display = 'none';
                     successMessage.classList.add('show');
                 } else {
-                    showError('Submission failed: ' + (result.error || 'Unknown error'));
+                    // 显示后端返回的具体错误
+                    var errorMsg = result.error || result.bitableError || 'Submission failed';
+                    console.error('[Feedback] 提交失败:', errorMsg);
+                    showError('提交失败: ' + errorMsg);
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('loading');
                     submitBtn.textContent = 'Submit Feedback';
                 }
+                console.log('[Feedback] 成功提示已显示');
 
             } catch (err) {
-                console.error('Fetch error:', err);
+                console.error('[Feedback] 提交失败:', err);
                 showError('Submission failed: ' + err.message);
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
