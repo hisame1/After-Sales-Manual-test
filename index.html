@@ -732,6 +732,18 @@
                 padding: 8px 15px;
                 font-size: 12px;
             }
+            .lang-switcher {
+                right: 170px !important;
+                top: 10px;
+            }
+            .lang-switcher select {
+                font-size: 12px;
+                padding: 6px 8px 6px 2px;
+            }
+            .lang-switcher svg {
+                width: 14px;
+                height: 14px;
+            }
         }
 
         /* --- PDF 生成样式 --- */
@@ -1498,7 +1510,8 @@
         }
         [dir="rtl"] .lang-switcher {
             right: auto !important;
-            left: 130px !important;
+            left: 220px !important;
+            padding: 0 8px 0 0 !important;
         }
         [dir="rtl"] .code-block .copy-btn {
             right: auto !important;
@@ -1533,7 +1546,7 @@
             }
             [dir="rtl"] .lang-switcher {
                 right: auto !important;
-                left: 10px !important;
+                left: 170px !important;
             }
         }
         /* PDF mode: reset margins in RTL */
@@ -1544,13 +1557,23 @@
 </head>
 <body>
     <!-- Language Switcher -->
-    <div class="lang-switcher" style="position: fixed; top: 20px; right: 130px; z-index: 1001;">
-        <select id="langSelect" onchange="switchLang(this.value)" style="background: #252525; color: #e0e0e0; border: 1px solid #444; border-radius: 5px; padding: 8px 12px; font-size: 14px; cursor: pointer;">
+    <div class="lang-switcher" style="position: fixed; top: 20px; right: 220px; z-index: 1001; display: flex; align-items: center; background: #252525; border: 1px solid #444; border-radius: 5px; padding: 0 0 0 8px; gap: 4px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none; flex-shrink: 0;">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <select id="langSelect" onchange="switchLang(this.value)" style="background: transparent; color: #e0e0e0; border: none; border-radius: 5px; padding: 8px 10px 8px 4px; font-size: 14px; cursor: pointer; outline: none; appearance: auto;">
             <option value="en">English</option>
             <option value="pl">Polski</option>
             <option value="de">Deutsch</option>
             <option value="fr">Français</option>
             <option value="ar">العربية</option>
+            <option value="zh">简体中文</option>
+            <option value="es">Español</option>
+            <option value="nl">Nederlands</option>
+            <option value="it">Italiano</option>
+            <option value="tr">Türkçe</option>
         </select>
     </div>
 
@@ -6023,8 +6046,8 @@ Software: uses software decoding — switch only if screen flickering or freezin
     var currentLang = 'en';
     var i18nTranslations = {};
     var langCache = {};              // in-memory cache
-    var availableLangs = ['en', 'pl', 'de', 'fr', 'ar']; // add more langs here as json packs are created
-    var LANG_CACHE_VERSION = 'v4';   // bump this when language packs are updated
+    var availableLangs = ['en', 'pl', 'de', 'fr', 'ar', 'zh', 'es', 'nl', 'it', 'tr']; // add more langs here as json packs are created
+    var LANG_CACHE_VERSION = 'v9';   // bump this when language packs are updated
 
     function showI18nError(message) {
         var existing = document.getElementById('i18n-error-toast');
